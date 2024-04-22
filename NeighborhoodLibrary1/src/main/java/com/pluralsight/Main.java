@@ -8,27 +8,27 @@ public class Main
 
     public static void main(String[] args)
     {
-        Library[] library = {
-                new Library(1, "970", "1984", false, ""),
-                new Library(2, "971", "To Kill a Mockingbird", false, ""),
-                new Library(3, "972", "The Catcher in the Rye", false, ""),
-                new Library(4, "973", "Where the Wild Things Are", false, ""),
-                new Library(5, "974", "Harry Potter and the Sorcerer's Stone", false, ""),
-                new Library(6, "975", "Pride and Prejudice", false, ""),
-                new Library(7, "976", "The Great Gatsby", false, ""),
-                new Library(8, "977", "The Bell Jar", false, ""),
-                new Library(9, "978", "The Hunger Games", false, ""),
-                new Library(10, "979", "A Game of Thrones", false, ""),
-                new Library(11, "980", "Harry Potter and the Chamber of Secrets", false, ""),
-                new Library(12, "981", "Beloved", false, ""),
-                new Library(13, "982", "Bridge to Terabithia", false, ""),
-                new Library(14, "983", "Speak", false, ""),
-                new Library(15, "984", "The Hobbit", false, ""),
-                new Library(16, "985", "Harry Potter and the Prisoner of Azkaban", false, ""),
-                new Library(17, "986", "Life of Pi", false, ""),
-                new Library(18, "987", "The Alchemist", false, ""),
-                new Library(19, "988", "Dune", false, ""),
-                new Library(20, "989", "The Help", false, "")
+        Book[] library = {
+                new Book(1, "970", "1984", false, ""),
+                new Book(2, "971", "To Kill a Mockingbird", false, ""),
+                new Book(3, "972", "The Catcher in the Rye", false, ""),
+                new Book(4, "973", "Where the Wild Things Are", false, ""),
+                new Book(5, "974", "Harry Potter and the Sorcerer's Stone", false, ""),
+                new Book(6, "975", "Pride and Prejudice", false, ""),
+                new Book(7, "976", "The Great Gatsby", false, ""),
+                new Book(8, "977", "The Bell Jar", false, ""),
+                new Book(9, "978", "The Hunger Games", false, ""),
+                new Book(10, "979", "A Game of Thrones", false, ""),
+                new Book(11, "980", "Harry Potter and the Chamber of Secrets", false, ""),
+                new Book(12, "981", "Beloved", false, ""),
+                new Book(13, "982", "Bridge to Terabithia", false, ""),
+                new Book(14, "983", "Speak", false, ""),
+                new Book(15, "984", "The Hobbit", false, ""),
+                new Book(16, "985", "Harry Potter and the Prisoner of Azkaban", false, ""),
+                new Book(17, "986", "Life of Pi", false, ""),
+                new Book(18, "987", "The Alchemist", false, ""),
+                new Book(19, "988", "Dune", false, ""),
+                new Book(20, "989", "The Help", false, "")
         };
 
         int choice = 0;
@@ -78,7 +78,7 @@ public class Main
         return Integer.parseInt(userInput.nextLine());
     }
 
-    public static void showAll(Library[] library)
+    public static void showAll(Book[] library)
     {
         System.out.println();
         System.out.println("All available books: ");
@@ -86,28 +86,63 @@ public class Main
 
         for (int i = 0; i < library.length; i++)
         {
-            Library libraryItem = library[i];
-            System.out.printf("Book Id: %d Book ISBN: %s  Book Title: %s\n", libraryItem.getId(), libraryItem.getIsbn(), libraryItem.getTitle());
+            Book book = library[i];
+            System.out.printf("Book Id: %d Book ISBN: %s  Book Title: %s\n", book.getId(), book.getIsbn(), book.getTitle());
+        }
+
+        System.out.println();
+        System.out.println("1: Check out a book");
+        System.out.println("2: Exit back to the main screen");
+        System.out.print("Enter a valid choice between option 1 or 2: ");
+        int choice = Integer.parseInt(userInput.nextLine());
+
+        String name ="";
+        switch (choice) {
+            case 1:
+                System.out.println();
+                // ask for the book id that they want
+                System.out.println("Enter book ID: ");
+                int bookId = Integer.parseInt(userInput.nextLine());
+                System.out.println("Please enter your name to check out a book: ");
+                name = userInput.nextLine();
+
+                for (int i = 0; i < library.length; i++) {
+                    if(bookId == library[i].getId()) {
+                        library[i].checkout(name);
+                    }
+                }
+                // loop through all books and find the book id they selected
+                // when you find the book, check it out
+//                showCheckedOut(library);
+                break;
+            //case 2:
+               // getHomeScreenSelection();
+            default:
+                if(choice > 1) {
+                    System.out.println();
+                    System.out.println("Invalid selection");
+                }
+
         }
     }
 
-    public static void showCheckedOut(Library[] library)
+
+    public static void CheckedOut(Book[] library)
     {
         System.out.println();
         System.out.println("Here's all the checked out books");
         System.out.println("----------------------------------------");
-        System.out.println("Enter book ID: ");
-        int bookId = Integer.parseInt(userInput.nextLine());
+        //System.out.println("Enter book ID: ");
+        //int bookId = Integer.parseInt(userInput.nextLine());
 
         for (int i = 0; i < library.length; i++)
         {
-            Library libraryItem = library[i];
+            Book book = library[i];
 
-            if(libraryItem.getId() == bookId) {
-                if(!libraryItem.getIsCheckedOut())
+            if(book.getId() == book.getId()) {
+                if(!book.getIsCheckedOut())
                 {
-                System.out.println("Enter your name");
-                String name = userInput.nextLine();
+                System.out.println("Book is not checked out yet");
                 }
                 else
                 {
@@ -118,7 +153,22 @@ public class Main
 
     }
 
-    public static void showCheckedTo(Library[] library)
+    public static void showCheckedOut(Book[] library)
+    {
+        boolean foundCheckedOutBooks = false;
+        System.out.println();
+        System.out.println("Checked out books");
+        System.out.println("-------------------------");
+
+        for (int i = 0; i < library.length; i++) {
+            if(library[i].getIsCheckedOut()) {
+                System.out.println();
+                System.out.printf("Id: %d Isbn: %s  Title: %s Checked out: %s \n", library[i].getId(), library[i].getIsbn(), library[i].getTitle(), library[i].getIsCheckedOut());
+            }
+        }
+    }
+
+    public static void showCheckedTo(Book[] library)
     {
         System.out.println("\n Enter book ID: ");
         int bookId = Integer.parseInt(userInput.nextLine());
